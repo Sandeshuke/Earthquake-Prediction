@@ -1,0 +1,27 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_absolute_error
+
+# Load earthquake data 
+dataframe = pd.read_csv(r'C:\Users\STUDENT\Documents\xyz.csv')
+
+# Select features and target
+X = dataframe[['latitude', 'longitude', 'depth', 'magnitude']] 
+y = dataframe['intensity']
+
+# Split data into training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+# Train a random forest regression model
+model = RandomForestRegressor(n_estimators=100, random_state=0)
+model.fit(X_train, y_train)
+
+# Make predictions on test set
+predictions = model.predict(X_test)
+
+# Evaluate model performance
+mae = mean_absolute_error(y_test, predictions)
+print("Mean Absolute : ", mae)
+plt.plot(X_test,predictions)
